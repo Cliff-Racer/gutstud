@@ -1,0 +1,40 @@
+<?php
+session_start();
+?>
+<div class="tableBlock">
+    <table class="tableDiplomniki">
+        <thead>
+            <tr class="headTableDiplomniki">
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Группа</th>
+                <th>Курс</th>
+                <th>Тема</th>
+            </tr>
+        </thead>
+        <tbody class="bodyTableDiplomniki">
+            <?php
+                $queryDT = "SELECT 'surname', 'name', 'patronymic', 'id_group_name', 'course', 'topic_name' FROM student WHERE 'id_professor' = '{$_SESSION["nowUserId"]}'";
+                $selectedStudent = mysqli_query($connection, $queryDT);
+                while($row = mysqli_fetch_array($selectedStudent)) {
+                    $surname = $row["surname"];
+                    $name = $row["name"];
+                    $patronymic = $row["patronymic"];
+                    $group_name_tb = "SELECT group_name FROM group WHERE 'id_group' = '{$row["id_group_name"]}'";
+                    $selectedGroupQuery = mysqli_query($connection, $group_name_tb);
+                    $group_name = mysqli_fetch_assoc($selectGroupQuery);
+                    $course = $row["course"];
+                    $topic_name = $row["topic_name"];
+                    echo "<tr>";
+                        echo "<td>{$surname}</td>";
+                        echo "<td>{$name}</td>";
+                        echo "<td>{$patronymic}</td>";
+                        echo "<td>{$group_name["group_name"]}</td>";
+                        echo "<td>{$course}</td>";
+                        echo "<td>{$topic_name}</td>";
+                }
+            ?>
+        </tbody>
+    </table>   
+</div>
